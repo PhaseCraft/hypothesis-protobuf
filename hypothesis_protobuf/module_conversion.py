@@ -1,12 +1,9 @@
 """Conversion of protobuf modules to hypothesis strategies via internal representation."""
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 from functools import partial
-
 from hypothesis import strategies as st
 
-from google.protobuf.internal.well_known_types import FieldDescriptor
+from google.protobuf.descriptor import FieldDescriptor
 
 
 SINGLEPRECISION = dict(max_value=(2 - 2 ** -23) * 2 ** 127, min_value=-(2 - 2 ** -23) * 2 ** 127)
