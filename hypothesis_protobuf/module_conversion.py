@@ -3,12 +3,8 @@
 from functools import partial
 from hypothesis import strategies as st
 
-<<<<<<< HEAD
-from google.protobuf.descriptor import FieldDescriptor
-=======
 from google.protobuf.internal import enum_type_wrapper
-from google.protobuf.internal.well_known_types import FieldDescriptor
->>>>>>> 7cd8962 (support nested messages and enums; support multiple module loading regardless of load order)
+from google.protobuf.descriptor import FieldDescriptor
 
 
 SINGLEPRECISION = dict(max_value=(2 - 2 ** -23) * 2 ** 127, min_value=-(2 - 2 ** -23) * 2 ** 127)
@@ -154,7 +150,7 @@ def message_to_strategy(message_obj, env, overrides=None):
         **{
             field_name: field_to_strategy(field, env, overrides=overrides)
             for field_name, field in message_obj.DESCRIPTOR.fields_by_name.items()
-        })
+        }
     )
 
 def handle_message_type(all_mess_objs, all_enum_objs, cont_obj, cont_type):
