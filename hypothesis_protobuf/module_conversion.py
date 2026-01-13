@@ -192,10 +192,10 @@ def modules_to_strategies(*modules, **overrides):
     modules_to_load = sorted(modules, key=lambda m: len(m.DESCRIPTOR.dependencies))
     while len(loaded_packages) != len(modules_to_load):
         for module_ in modules_to_load:
-            if module_.DESCRIPTOR.package in loaded_packages:
+            if module_.DESCRIPTOR.name in loaded_packages:
                 continue
-            if not all(dependency.package in loaded_packages for dependency in module_.DESCRIPTOR.dependencies):
+            if not all(dependency.name in loaded_packages for dependency in module_.DESCRIPTOR.dependencies):
                 continue
             load_module_into_env(module_, env, overrides)
-            loaded_packages.add(module_.DESCRIPTOR.package)
+            loaded_packages.add(module_.DESCRIPTOR.name)
     return env
