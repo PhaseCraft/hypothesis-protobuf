@@ -78,6 +78,10 @@ def test_instant_message_processor(instant_message):
     assert process_message(instant_message)  # will be run using multiple InstantMessage examples
 ```
 
+### Compound Messages
+
+If your message depends on other packages or messages from other modules you will need to add all of these to `modules_to_strategies`
+
 ### Overriding strategies
 When generating strategies for a given protobuf module, field-specific overrides can be provided. These overrides must be mappings from full field names to strategies, like so:
 ```python
