@@ -1,0 +1,6 @@
+syntax = "proto3";
+package im_package_depend;
+
+message User {
+    string name = 1;
+}

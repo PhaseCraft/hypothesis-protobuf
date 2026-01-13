@@ -1,0 +1,15 @@
+syntax = "proto3";
+package im_package_depend;
+
+import "im_package_depend_dependency.proto";
+
+message DepMessage {
+  DepEnum en = 1;
+  im_package_depend.User user = 2;
+}
+
+enum DepEnum {
+  ZERO = 0;
+  ONE = 1;
+  TWO = 2;
+}

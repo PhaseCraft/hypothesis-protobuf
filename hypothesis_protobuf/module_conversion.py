@@ -1,6 +1,7 @@
 """Conversion of protobuf modules to hypothesis strategies via internal representation."""
 
 from functools import partial
+from warnings import warn
 from hypothesis import strategies as st
 
 from google.protobuf.descriptor import FieldDescriptor
@@ -189,13 +190,17 @@ def modules_to_strategies(*modules, **overrides):
     """
     env = {}
     loaded_packages = set()
+    given_packages = set(d.DESCRIPTOR.name for d in modules)
     modules_to_load = sorted(modules, key=lambda m: len(m.DESCRIPTOR.dependencies))
     while len(loaded_packages) != len(modules_to_load):
         for module_ in modules_to_load:
             if module_.DESCRIPTOR.name in loaded_packages:
                 continue
             if not all(dependency.name in loaded_packages for dependency in module_.DESCRIPTOR.dependencies):
-                continue
+                if not all(dependency.name in given_packages for dependency in module_.DESCRIPTOR.dependencies):
+                    warn(f'{module_} has missing dependencies meaning some messages may not have loaded.')
+                else:
+                    continue
             load_module_into_env(module_, env, overrides)
             loaded_packages.add(module_.DESCRIPTOR.name)
     return env

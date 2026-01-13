@@ -1,10 +1,13 @@
 """Tests for hypothesis_protobuf/module_conversion.py"""
+import pytest
 from numbers import Number
 
 from hypothesis import strategies as st
 
 from .test_schemas import (
     im_depend_pb2,
+    im_package_depend_dependency_pb2,
+    im_package_depend_pb2,
     im_nested_pb2,
     im_pb2,
     loop_pb2,
@@ -104,3 +107,24 @@ def test_multiple_modules_dependency():
 	# im_depend_pb2 imports types from im_pb2
 	protobuf_strategies = modules_to_strategies(im_depend_pb2, im_pb2)
 	assert im_depend_pb2.DepMessage in protobuf_strategies
+
+def test_multiple_modules_dependency_without_all_deps():
+    """Ensure modules are loaded regardless whether all deps are provided."""
+    # im_depend_pb2 imports types from im_pb2
+    with pytest.warns():
+        protobuf_strategies = modules_to_strategies(im_depend_pb2)
+    assert im_depend_pb2.DepEnum in protobuf_strategies
+
+def test_package_dependancy():
+    """Ensure modules are loaded regardless of load order."""
+    # im_package_depend_pb2 imports types from im_package_depend_dependency_pb2
+    protobuf_strategies = modules_to_strategies(im_package_depend_pb2, im_package_depend_dependency_pb2)
+    assert im_package_depend_pb2.DepMessage in protobuf_strategies
+
+
+def test_package_dependancy_without_all_deps():
+    """Ensure modules are loaded regardless of load order."""
+    # im_package_depend_pb2 imports types from im_package_depend_dependency_pb2
+    with pytest.warns():
+        protobuf_strategies = modules_to_strategies(im_package_depend_pb2)
+    assert im_package_depend_pb2.DepEnum in protobuf_strategies
