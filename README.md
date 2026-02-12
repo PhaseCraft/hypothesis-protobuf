@@ -131,5 +131,16 @@ strategy_overrides = {
 }
 ```
 
+#### google.protobuf.Timestamp
+
+To make this particular message work it is recommended that you use the override:
+
+```python
+strategy_overrides = {
+    "google.protobuf.Timestamp.seconds": st.integers(-62135596800, 253402300799),
+    "google.protobuf.Timestamp.nanos": st.integers(0, 1e9-1),
+}
+```
+
 ## License
 `hypothesis-protobuf` is available under the MIT license.
